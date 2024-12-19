@@ -84,6 +84,79 @@ end
 end
 end})
 Tabs.Main:AddSection("Proximity Prompts")
+Tabs.Main:AddToggle("InstanceInteract",{
+Title = "Instance Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end})
+Tabs.Main:AddToggle("ThroughInteract",{
+Title = "Through Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = false
+end
+end
+ThroughInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = false
+end
+end
+end)
+else
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = true
+end
+end
+ThroughInteract:Disconnect()
+end
+end})
+Tabs.Main:AddToggle("RemoteInteract",{
+Title = "Remote Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 20
+end
+end
+RemoteInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 20
+end
+end
+end)
+else
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 7.5
+end
+end
+RemoteInteract:Disconnect()
+end
+end})
 Tabs.Players:AddSlider("MySlider", {
 Title = "Select Speed",
 Default = 16,
