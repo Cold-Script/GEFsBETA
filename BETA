@@ -33,9 +33,7 @@ Title = "Auto Money Farm",
 Default = false,
 Callback = function(v)
 getgenv().AutoMoneyFarm = v
-pcall(function()
-spawn(function()
-while wait(1) do
+while wait() do
 if getgenv().AutoMoneyFarm then
 for _, v in pairs(workspace:GetDescendants()) do
 if v.Name == "Money" then
@@ -46,27 +44,26 @@ end
 end
 end
 end
-end)
-end)
 end})
-Tabs.Main:AddToggle("MyToggle",{
+Tabs.Main:AddButton({
 Title = "Invisible Planks",
-Default = false,
-Callback = function(v)
-getgenv().InvisPlank = v
-pcall(function()
-spawn(function()
-while wait(1) do
-if getgenv().InvisPlank then
-workspace.Planks.Plank.CanCollide = false
-workspace.Planks.Plank.Transparency = 1
-else
-workspace.Planks.Plank.CanCollide = true
-workspace.Planks.Plank.Transparency = 0
+Callback = function()
+for _, v in  pairs(workspace:GetDescendants()) do
+if v.Name == "Plank" then
+v.Transparency = 1
+v.CanCollide = false
 end
 end
-end)
-end)
+end})
+Tabs.Main:AddButton({
+Title = "Uninvisible Planks",
+Callback = function()
+for _, v in  pairs(workspace:GetDescendants()) do
+if v.Name == "Plank" then
+v.Transparency = 0
+v.CanCollide = true
+end
+end
 end})
 Tabs.Main:AddSection("Miscellaneous")
 Tabs.Main:AddDropdown("MyDropdown",{
@@ -83,8 +80,29 @@ Callback = function()
 for _, v in pairs(workspace:GetDescendants()) do
 if v.Name == getgenv().SelectItem then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pickups[getgenv().SelectItem].CFrame
-wait(0.2)
-fireproximityprompt(v.ProximityPrompt)
 end
 end
+end})
+Tabs.Main:AddSection("Proximity Prompts")
+Tabs.Players:AddSlider("MySlider", {
+Title = "Select Speed",
+Default = 16,
+Min = 16,
+Max = 50,
+Rounding = 1,
+Callback = function(v)
+getgenv().Speed = v
+end})
+Tabs.Players:AddToggle("MyToggle",{
+Title = "Speed",
+Default = false,
+Callback = function(v)
+getgenv().EnabledSpeed = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if getgenv().EnabledSpeed then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().Speed or 16
+else
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end)
 end})
