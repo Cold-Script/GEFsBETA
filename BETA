@@ -35,11 +35,8 @@ Callback = function(v)
 getgenv().AutoMoneyFarm = v
 pcall(function()
 spawn(function()
-while getgenv().AutoMoneyFarm do
-if not workspace.Pickups.Money then
-Notify("Alert", "Money not found", 3)
-end
-if workspace.Pickups.Money then
+while wait(1) do
+if getgenv().AutoMoneyFarm then
 for _, v in pairs(workspace:GetDescendants()) do
 if v.Name == "Money" then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pickups.Money.CFrame
@@ -51,4 +48,43 @@ end
 end
 end)
 end)
+end})
+Tabs.Main:AddToggle("MyToggle",{
+Title = "Invisible Planks",
+Default = false,
+Callback = function(v)
+getgenv().InvisPlank = v
+pcall(function()
+spawn(function()
+while wait(1) do
+if getgenv().InvisPlank then
+workspace.Planks.Plank.CanCollide = false
+workspace.Planks.Plank.Transparency = 1
+else
+workspace.Planks.Plank.CanCollide = true
+workspace.Planks.Plank.Transparency = 0
+end
+end
+end)
+end)
+end})
+Tabs.Main:AddSection("Miscellaneous")
+Tabs.Main:AddDropdown("MyDropdown",{
+Title = "Select Items",
+Values = {"GPS", "Lantern", "Hammer", "Bat", "Crowbar", "Handgun", "Shotgun", "Bullets", "Shells", "Medkit", "Food", "Soda"},
+Multi = false,
+Default = "",
+Callback = function(v)
+getgenv().SelectItem = v
+end})
+Tabs.Main:AddButton({
+Title = "Teleport to item",
+Callback = function()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == getgenv().SelectItem then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pickups[getgenv().SelectItem].CFrame
+wait(0.2)
+fireproximityprompt(v.ProximityPrompt)
+end
+end
 end})
