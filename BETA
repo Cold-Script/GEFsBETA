@@ -1,1 +1,54 @@
-
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local Window = Fluent:CreateWindow({
+    Title = "• WinterClaws | -BETA- | GEFs [ Basement ] •",
+    SubTitle = "By rechedmcvn",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+local wait = task.wait
+local pcall = task.pcall
+local spawn = task.spawn
+wait(0.25)
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "layers" }),
+    Players = Window:AddTab({ Title = "Players", Icon = "user" }),
+    Exploits = Window:AddTab({ Title = "Exploits", Icon = "book" }),
+    Visual = Window:AddTab({ Title = "Visual", Icon = "camera" }),
+}
+function Notify(title, desc, time)
+Fluent:Notify({
+Title = title,
+Content = desc,
+Duration = time
+})
+end
+wait(0.25)
+Tabs.Main:AddToggle("MyToggle",{
+Title = "Auto Money Farm",
+Default = false,
+Callback = function(v)
+getgenv().AutoMoneyFarm = v
+pcall(function()
+spawn(function()
+while getgenv().AutoMoneyFarm do
+if not workspace.Pickups.Money then
+Notify("Alert", "Money not found", 3)
+end
+if workspace.Pickups.Money then
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "Money" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pickups.Money.CFrame
+wait(0.2)
+fireproximityprompt(v.ProximityPrompt)
+end
+end
+end
+end
+end)
+end)
+end})
