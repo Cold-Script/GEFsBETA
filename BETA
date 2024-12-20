@@ -80,7 +80,7 @@ end
 end)
 else
 InvisPlank:Disconnect()
-for _, v in  pairs(workspace:GetDescendants()) do
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Plank" then
 v.Transparency = 0
 v.CanCollide = true
@@ -107,53 +107,6 @@ end
 end
 end})
 Tabs.Main:AddSection("Proximity Prompts")
-Tabs.Main:AddToggle("InstanceInteract",{
-Title = "Instance Interact",
-Default = false,
-Callback = function(v)
-if v then
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.HoldDuration = 0
-end
-end
-InstanceInteract = workspace.Pickups.ChildAdded:Connect(function(v)
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.HoldDuration = 0
-end
-end
-end)
-else
-InstanceInteract:Disconnect()
-end
-end})
-Tabs.Main:AddToggle("ThroughInteract",{
-Title = "Through Interact",
-Default = false,
-Callback = function(v)
-if v then
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = false
-end
-end
-ThroughInteract = workspace.Pickups.ChildAdded:Connect(function(v)
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = false
-end
-end
-end)
-else
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = true
-end
-end
-ThroughInteract:Disconnect()
-end
-end})
 Tabs.Main:AddToggle("RemoteInteract",{
 Title = "Remote Interact",
 Default = false,
@@ -185,6 +138,7 @@ Tabs.Main:AddToggle("NoFog",{
 Title = "Ambient Fogdelete",
 Default = false,
 Callback = function(v)
+game:GetService("RunService").RenderStepped:Connect(function()
 if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
 if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
 game.Lighting.FogStart = v and 0 or game.Lighting:GetAttribute("FogStart")
@@ -194,6 +148,7 @@ if fog then
 if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
 fog.Density = v and 0 or fog:GetAttribute("Density")
 end
+end)
 end})
 Tabs.Players:AddSlider("MySlider", {
 Title = "Select Speed",
@@ -272,7 +227,7 @@ if v then
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
 v.Hitbox.CanTouch = false
-v.Hurtbox.CanTouch = true
+v.Hurtbox.CanTouch = false
 v.RootPart.CanTouch = false
 end
 end
@@ -280,7 +235,7 @@ AntiGEFs = workspace.GEFs.ChildAdded:Connect(function(v)
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
 v.Hitbox.CanTouch = false
-v.Hurtbox.CanTouch = true
+v.Hurtbox.CanTouch = false
 v.RootPart.CanTouch = false
 end
 end
@@ -297,32 +252,14 @@ end
 end
 end})
 Tabs.Exploits:AddSection("Enchantmant")
-Tabs.Exploits:AddToggle("Weapon",{
-Title = "Boost Damage Weapon ( Close Combat )",
+Tabs.Exploits:AddButton({
+Title = "INF-DMG Weapon ( Close Combat )",
 Default = false,
 Callback = function(v)
-if v then
 for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
 if v.Name == "Backpack" then
 v.Crowbar.Damage.Value = 9e9
 v.Bat.Damage.Value = 9e9
-end
-end
-BoostDamage = workspace.Backpack.ChildAdded:Connect(function(v)
-for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
-if v.Name == "Backpack" then
-v.Crowbar.Damage.Value = 9e9
-v.Bat.Damage.Value = 9e9
-end
-end
-end)
-else
-BoostDamage:Disconnect()
-for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
-if v.Name == "Backpack" then
-v.Crowbar.Damage.Value = 30
-v.Bat.Damage.Value = 30
-end
 end
 end
 end})
