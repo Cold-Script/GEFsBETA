@@ -5,15 +5,35 @@ local Window = Fluent:CreateWindow({
     Title = "• WinterClaws | -BETA- | GEFs [ Basement ] •",
     SubTitle = "By rechedmcvn",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(500, 370),
     Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
-local wait = task.wait
-local pcall = task.pcall
-local spawn = task.spawn
-wait(0.25)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ScreenGui"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+ 
+local Toggle = Instance.new("TextButton")
+Toggle.Name = "Toggle"
+Toggle.Parent = ScreenGui
+Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Toggle.BackgroundTransparency = 0.6
+Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
+Toggle.Size = UDim2.new(0, 90, 0, 38)
+Toggle.Font = Enum.Font.SourceSans
+Toggle.Text = "Toggle"
+Toggle.TextColor3 = Color3.fromRGB(248, 248, 248)
+Toggle.TextSize = 28.000
+Toggle.Draggable = true
+Toggle.MouseButton1Click:connect(function()
+    keypress(Enum.KeyCode.LeftControl)
+end)
+ 
+local Corner = Instance.new("UICorner")
+Corner.Name = "Corner"
+Corner.Parent = Toggle
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "layers" }),
     Players = Window:AddTab({ Title = "Players", Icon = "user" }),
@@ -51,9 +71,11 @@ v.CanCollide = false
 end
 end
 InvisPlank = workspace.Planks.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Plank" then
 v.Transparency = 1
 v.CanCollide = false
+end
 end
 end)
 else
@@ -159,29 +181,10 @@ RemoteInteract:Disconnect()
 end
 end})
 Tabs.Main:AddSection("Lighting")
-Tabs.Main:AddToggle("NoDarknessEffect",{
-Title = "Ambient Lighting",
-Default = false,
-Callback = function(v)
-game:GetService("RunService").RenderStepped:Connect(function()
-if v then
-game.Lighting.Brightness = 0
-game.Lighting.FogEnd = 9e9
-game.Lighting.GlobalShadows = false
-game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
-else
-game.Lighting.Brightness = 1
-game.Lighting.GlobalShadows = true
-game.Lighting.FogEnd = 250
-game.Lighting.OutdoorAmbient = Color3.new(0,0,0)
-end
-end)
-end})
 Tabs.Main:AddToggle("NoFog",{
 Title = "Ambient Fogdelete",
 Default = false,
 Callback = function(v)
-pcall(function()
 if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
 if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
 game.Lighting.FogStart = v and 0 or game.Lighting:GetAttribute("FogStart")
@@ -191,7 +194,6 @@ if fog then
 if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
 fog.Density = v and 0 or fog:GetAttribute("Density")
 end
-end)
 end})
 Tabs.Players:AddSlider("MySlider", {
 Title = "Select Speed",
@@ -270,15 +272,17 @@ if v then
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
 v.Hitbox.CanTouch = false
-v.Hurtbox.CanTouch = false
+v.Hurtbox.CanTouch = true
 v.RootPart.CanTouch = false
 end
 end
 AntiGEFs = workspace.GEFs.ChildAdded:Connect(function(v)
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
 v.Hitbox.CanTouch = false
-v.Hurtbox.CanTouch = false
+v.Hurtbox.CanTouch = true
 v.RootPart.CanTouch = false
+end
 end
 end)
 else
@@ -288,6 +292,36 @@ if v.Parent.Name == "GEFs" then
 v.Hitbox.CanTouch = true
 v.Hurtbox.CanTouch = true
 v.RootPart.CanTouch = true
+end
+end
+end
+end})
+Tabs.Exploits:AddSection("Enchantmant")
+Tabs.Exploits:AddToggle("Weapon",{
+Title = "Boost Damage Weapon ( Close Combat )",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
+if v.Name == "Backpack" then
+v.Crowbar.Damage.Value = 9e9
+v.Bat.Damage.Value = 9e9
+end
+end
+BoostDamage = workspace.Backpack.ChildAdded:Connect(function(v)
+for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
+if v.Name == "Backpack" then
+v.Crowbar.Damage.Value = 9e9
+v.Bat.Damage.Value = 9e9
+end
+end
+end)
+else
+BoostDamage:Disconnect()
+for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
+if v.Name == "Backpack" then
+v.Crowbar.Damage.Value = 30
+v.Bat.Damage.Value = 30
 end
 end
 end
