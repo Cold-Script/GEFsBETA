@@ -262,3 +262,33 @@ game.Players.LocalPlayer.Character.RightUpperLeg.Massless = not getgenv().NoSlow
 game.Players.LocalPlayer.Character.UpperTorso.Massless = not getgenv().NoSlow
 end)
 end})
+Tabs.Exploits:AddToggle("AntiGEFs",{
+Title = "Anti-GEFs",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Parent.Name == "GEFs" then
+v.Hitbox.CanTouch = false
+v.Hurtbox.CanTouch = false
+v.RootPart.CanTouch = false
+end
+end
+AntiGEFs = workspace.GEFs.ChildAdded:Connect(function(v)
+if v.Parent.Name == "GEFs" then
+v.Hitbox.CanTouch = false
+v.Hurtbox.CanTouch = false
+v.RootPart.CanTouch = false
+end
+end)
+else
+AntiGEFs:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Parent.Name == "GEFs" then
+v.Hitbox.CanTouch = true
+v.Hurtbox.CanTouch = true
+v.RootPart.CanTouch = true
+end
+end
+end
+end})
