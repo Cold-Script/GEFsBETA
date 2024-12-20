@@ -39,24 +39,23 @@ fireproximityprompt(v.ProximityPrompt)
 end
 end
 end})
-Tabs.Main:AddButton({
+Tabs.Main:AddToggle("MyToggle",{
 Title = "Invisible Planks",
-Callback = function()
+Default = false,
+Callback = function(v)
+if v then
 for _, v in  pairs(workspace:GetDescendants()) do
 if v.Name == "Plank" then
 v.Transparency = 1
 v.CanCollide = false
 end
 end
-end})
-Tabs.Main:AddButton({
-Title = "Uninvisible Planks",
-Callback = function()
-for _, v in  pairs(workspace:GetDescendants()) do
+InvisPlank = workspace.Planks.ChildAdded:Connect(function(v)
 if v.Name == "Plank" then
-v.Transparency = 0
-v.CanCollide = true
+v.Transparency = 1
+v.CanCollide = false
 end
+end)
 end
 end})
 Tabs.Main:AddSection("Miscellaneous")
@@ -88,7 +87,7 @@ if v:IsA("ProximityPrompt") then
 v.HoldDuration = 0
 end
 end
-InstanceInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+InstanceInteract = workspace.Pickups.ChildAdded:Connect(function(v)
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
 v.HoldDuration = 0
@@ -109,7 +108,7 @@ if v:IsA("ProximityPrompt") then
 v.RequiresLineOfSight = false
 end
 end
-ThroughInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+ThroughInteract = workspace.Pickups.ChildAdded:Connect(function(v)
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
 v.RequiresLineOfSight = false
@@ -135,7 +134,7 @@ if v:IsA("ProximityPrompt") then
 v.MaxActivationDistance = 20
 end
 end
-RemoteInteract = workspace.CurrentRooms.ChildAdded:Connect(function(v)
+RemoteInteract = workspace.Pickups.ChildAdded:Connect(function(v)
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
 v.MaxActivationDistance = 20
