@@ -59,32 +59,23 @@ fireproximityprompt(v.ProximityPrompt)
 end
 end
 end})
-Tabs.Main:AddToggle("MyToggle",{
+Tabs.Main:AddButton({
 Title = "Invisible Planks",
-Default = false,
-Callback = function(v)
-if v then
+Callback = function()
 for _, v in  pairs(workspace:GetDescendants()) do
 if v.Name == "Plank" then
 v.Transparency = 1
 v.CanCollide = false
 end
 end
-InvisPlank = workspace.Planks.ChildAdded:Connect(function(v)
-for _,v in pairs(workspace:GetDescendants()) do
-if v.Name == "Plank" then
-v.Transparency = 1
-v.CanCollide = false
-end
-end
-end)
-else
-InvisPlank:Disconnect()
+end})
+Tabs.Main:AddButton({
+Title = "Uninvisible Planks",
+Callback = function()
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Plank" then
 v.Transparency = 0
 v.CanCollide = true
-end
 end
 end
 end})
@@ -173,7 +164,7 @@ end
 end)
 end})
 Tabs.Players:AddSlider("FOV",{
-Title = "Select Field Of View",
+Title = "Field Of View",
 Default = 70,
 Min = 70,
 Max = 120,
@@ -219,14 +210,12 @@ game.Players.LocalPlayer.Character.RightUpperLeg.Massless = not getgenv().NoSlow
 game.Players.LocalPlayer.Character.UpperTorso.Massless = not getgenv().NoSlow
 end)
 end})
-Tabs.Exploits:AddToggle("AntiGEFs",{
-Title = "Anti-GEFs",
-Default = false,
-Callback = function(v)
-if v then
+Tabs.Exploits:AddButton({
+Title = "GodMode",
+Callback = function()
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
-v.Hitbox.CanTouch = false
+v.Hitbox.CanTouch = true
 v.Hurtbox.CanTouch = false
 v.RootPart.CanTouch = false
 end
@@ -234,32 +223,10 @@ end
 AntiGEFs = workspace.GEFs.ChildAdded:Connect(function(v)
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Parent.Name == "GEFs" then
-v.Hitbox.CanTouch = false
+v.Hitbox.CanTouch = true
 v.Hurtbox.CanTouch = false
 v.RootPart.CanTouch = false
 end
 end
 end)
-else
-AntiGEFs:Disconnect()
-for _,v in pairs(workspace:GetDescendants()) do
-if v.Parent.Name == "GEFs" then
-v.Hitbox.CanTouch = true
-v.Hurtbox.CanTouch = true
-v.RootPart.CanTouch = true
-end
-end
-end
-end})
-Tabs.Exploits:AddSection("Enchantmant")
-Tabs.Exploits:AddButton({
-Title = "INF-DMG Weapon ( Close Combat ) [ OFF ATTRIBUTE ]",
-Default = false,
-Callback = function(v)
-for _,v in pairs(game.Players.LocalPlayer:GetDescendants()) do
-if v.Name == "Backpack" then
-v.Crowbar.Damage.Value = 9e9
-v.Bat.Damage.Value = 9e9
-end
-end
 end})
