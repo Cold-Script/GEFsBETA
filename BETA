@@ -28,20 +28,14 @@ Duration = time
 })
 end
 wait(0.25)
-Tabs.Main:AddToggle("MyToggle",{
-Title = "Auto Money Farm",
-Default = false,
-Callback = function(v)
-getgenv().AutoMoneyFarm = v
-while wait() do
-if getgenv().AutoMoneyFarm then
+Tabs.Main:AddButton({
+Title = "Teleport Money",
+Callback = function()
 for _, v in pairs(workspace:GetDescendants()) do
 if v.Name == "Money" then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Pickups.Money.CFrame
 wait(0.2)
 fireproximityprompt(v.ProximityPrompt)
-end
-end
 end
 end
 end})
@@ -156,6 +150,41 @@ end
 end
 RemoteInteract:Disconnect()
 end
+end})
+Tabs.Main:AddSection({"Lighting"})
+Tabs.Main:AddToggle("NoDarknessEffect",{
+Title = "Ambient Lighting",
+Default = false,
+Callback = function(v)
+game:GetService("RunService").RenderStepped:Connect(function()
+if v then
+game.Lighting.Brightness = 0
+game.Lighting.FogEnd = 9e9
+game.Lighting.GlobalShadows = false
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+else
+game.Lighting.Brightness = 1
+game.Lighting.GlobalShadows = true
+game.Lighting.FogEnd = 250
+game.Lighting.OutdoorAmbient = Color3.new(0,0,0)
+end
+end)
+end})
+Tabs.Main:AddToggle("NoFog",{
+Title = "Ambient Fogdelete",
+Default = false,
+Callback = function(v)
+pcall(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = v and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = v and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = v and 0 or fog:GetAttribute("Density")
+end
+end)
 end})
 Tabs.Players:AddSlider("MySlider", {
 Title = "Select Speed",
