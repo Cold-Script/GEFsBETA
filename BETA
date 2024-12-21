@@ -30,7 +30,7 @@ if _G.NotificationSound then
     end
 
 local Window = Library:CreateWindow({
-	Title = "Article Hub | Clound X | GEF",
+	Title = "WinterClaws | GEF",
 	Center = true,
     AutoShow = true,
     Resizable = true,
@@ -55,7 +55,7 @@ local inventory = Tabs.Main:AddRightTabbox()
 local Item = inventory:AddTab("Teleport")
 
 players:AddToggle("Anti GEF", {
-    Text = "Anti GEF & Boss",
+    Text = "Anti GEF",
     Default = false,
     Callback = function(Value)
     getgenv().config.AntiGef = Value
@@ -76,7 +76,7 @@ end
 })
 
 stats:AddToggle("Stamina", {
-    Text = "Inf Max Stamina + Stamina Regen",
+    Text = "Inf Max Stamina + Regen",
     Default = false,
     Callback = function(Value)
     getgenv().config.stamina = Value
@@ -127,7 +127,6 @@ if getgenv().config.ItemSelect then
 
 local weapon = Tabs.Weapon:AddLeftTabbox()
 local weapond = weapon:AddTab("Melee Featured")
-local gun = weapon:AddTab("Gun Featured")
 
 weapond:AddToggle("Bat", {
     Text = "Inf Damage Bat",
@@ -272,8 +271,6 @@ end
 })
 
 local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu")
-local CreditsGroup = Tabs["UI Settings"]:AddRightGroupbox("Credits")
-
 MenuGroup:AddDropdown("NotifySide", {
     Text = "Notification Side",
     Values = {"Left", "Right"},
@@ -320,105 +317,6 @@ MenuGroup:AddToggle("KeybindMenuOpen", {Default = false, Text = "Open Keybind Me
 MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(Value) Library.ShowCustomCursor = Value end})
 MenuGroup:AddDivider()
 MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", {Default = "RightShift", NoUI = true, Text = "Menu keybind"})
-MenuGroup:AddButton("Copy Link discord", function()
-    if setclipboard then
-        setclipboard("https://discord.gg/56BDhEaz32")
-        Library:Notify("Copied discord link to clipboard!")
-    else
-        Library:Notify("Discord link: https://discord.gg/56BDhEaz32", 10)
-    end
-end):AddButton("Copy Link Zalo", function()
-    if setclipboard then
-        setclipboard("https://zalo.me/g/qlukiy407")
-        Library:Notify("Copied Zalo link to clipboard!")
-    else
-        Library:Notify("Zalo link: https://zalo.me/g/qlukiy407", 10)
-    end
-end)
-MenuGroup:AddButton("Unload", function() Library:Unload() end)
-
-CreditsGroup:AddLabel("AmongUs / Owner", true)
-CreditsGroup:AddLabel("Giang Hub / Script", true)
-CreditsGroup:AddDivider()
-CreditsGroup:AddLabel("Feedback error script or up to you, 3 time feedback to you, wait until notification feelback success", true)
-CreditsGroup:AddInput("Feedback", {
-    Default = "",
-    Numeric = false,
-    Text = "",
-    Placeholder = "Feedback",
-    Callback = function(Value)
-_G.Feedback = Value
-    end
-})
-
-_G.FeedbackSuccess = 0
-CreditsGroup:AddButton("Feedback", function()
-if _G.FeedbackSuccess == 3 then return end
-_G.FeedbackSuccess = _G.FeedbackSuccess + 1
-if http and http.request or request or syn.request then
-local request = http and http.request or request or syn.request
-Notification("Feelback Success", 2)
-function Feelback(jsondate)
-local response = request({
-        Url = "https://discord.com/api/webhooks/1311945249618395197/h2NGvYgregZcbyttDk5QPXClx_YS70XUKnjzPVAqy31ailB3frIREQ5Sb2nIw1cNKvQS",
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = game:GetService("HttpService"):JSONEncode(jsondate)
-    })
-end
-Feelback({
-          ["embeds"] = {{
-             ["title"] = "Article Hub 🅰️ - Player Feedback",
-             ["description"] = "# Feedback",
-             ["color"] = 16711680,
-             ["fields"] = {
-             	{["name"] = "Feedback", ["value"] = "```".._G.Feedback.."```", ["inline"] = true}
-                },
-            ["footer"] = {["text"] = os.date("%c")}
-          }}
-        })
-       Feelback({
-          ["embeds"] = {{
-             ["description"] = "# Check Server",
-             ["color"] = 16711680,
-             ["fields"] = {
-                  {["name"] = "Ping", ["value"] = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(), ["inline"] = true},
-                  {["name"] = "FPS", ["value"] = math.floor(workspace:GetRealPhysicsFPS()), ["inline"] = true},
-                  {["name"] = "Server Player", ["value"] = tostring(#game.Players:GetPlayers()).." / "..game.Players.MaxPlayers, ["inline"] = true},
-                  {["name"] = "Display Name", ["value"] = game.Players.LocalPlayer.DisplayName, ["inline"] = true},
-                  {["name"] = "User ID", ["value"] = game.Players.LocalPlayer.UserId, ["inline"] = true},
-                  {["name"] = "Account Age", ["value"] = game.Players.LocalPlayer.AccountAge.." Days", ["inline"] = true}
-                },
-            ["footer"] = {["text"] = os.date("%c")}
-          }}
-        })
-    Feelback({
-          ["embeds"] = {{
-             ["description"] = "# Check Game",
-             ["color"] = 16711680,
-             ["fields"] = {
-                  {["name"] = "Game Name", ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, ["inline"] = true},
-                  {["name"] = "Game Id", ["value"] = game.GameId, ["inline"] = true},
-                  {["name"] = "Job Id", ["value"] = game.JobId, ["inline"] = true},
-                  {["name"] = "Game Place Id", ["value"] = game.PlaceId, ["inline"] = true}
-                },
-            ["footer"] = {["text"] = os.date("%c")}
-          }}
-        })
-    Feelback({
-          ["embeds"] = {{
-             ["description"] = "# Executor",
-             ["color"] = 16711680,
-             ["fields"] = {
-                  {["name"] = "Executor", ["value"] = identifyexecutor() or "Unknown", ["inline"] = true}
-                },
-            ["footer"] = {["text"] = os.date("%c")}
-          }}
-        })
-else
-Notification("http not only executor", 2)
-end
-end)
 
 Library.ToggleKeybind = Options.MenuKeybind
 
